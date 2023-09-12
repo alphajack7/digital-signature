@@ -1,0 +1,4 @@
+this file contains the private key,public key and signature
+private key is meant to be secret and only be know to you
+and you have to sent public to the client who will use it to verify the signature
+once you have sent public key to the client then the file and signature can be sent through any unsecure channel
