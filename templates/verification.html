@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+    
+{% endblock %}
+
+{% block body %} 
+<h1>Digital Signature Verification</h1>
+<form action="/verify" method="POST" enctype="multipart/form-data">
+    <label for="vfile">Upload File:</label>
+    <input type="file" name="vfile" id="vfile" >
+    <br>
+    <label for="key_file" >Upload public key in .pem format</label>
+    <input type="file" name="key_file" id="key_file" accept=".pem">
+    <br>
+    <label for="signature">Upload Signature:</label>
+    <input type="file" name="signature" id="signature" accept=".bin">
+    <br>
+    <input type="submit" value="upload">
+    
+</form>
+{% endblock %}

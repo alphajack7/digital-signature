@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+    
+{% endblock %}
+
+{% block body %} 
+<h1>Digital Signature</h1>
+<form action="/sign" method="POST" enctype="multipart/form-data" >
+    <input type="submit" value="signing">
+</form>
+<form action="/verification" method="POST" enctype="multipart/form-data" >
+    
+    <input type="submit" value="verification">
+</form>
+
+{% endblock %}
