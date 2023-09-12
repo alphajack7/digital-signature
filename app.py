@@ -68,7 +68,7 @@ def verify():
     public_key=load_public_key_from_pem_file(key_path)
     result=verify_signature(file_path,signature,public_key)
     os.remove(file_path),os.remove(key_path),os.remove(signature_filename)
-    return result
+    return render_template("output.html",result=result)
 
 @app.route('/download',methods=['POST','PUT','DELETE'])
 def download():
@@ -99,10 +99,10 @@ def verify_signature(file_path, signature, public_key):
             hashes.SHA256()
         )
         print("Signature is valid.")
-        return 'signagure is valid'
+        return 'Signature is valid'
     except:
         print("Signature is NOT valid.")
-        return 'signagure is not valid'
+        return 'Signature is not valid'
 
 def generate_key_pair():
     private_key = rsa.generate_private_key(

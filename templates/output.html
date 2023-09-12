@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+    
+{% endblock %}
+
+{% block body %} 
+<h1>Signature verfied</h1>
+<form action="/">
+    {% if result=='Signature is not valid' %}
+        <p style="color:tomato;">{{ result }}</p>
+    {% else %}
+    <p style="color:rgb(8, 75, 8);">{{ result }}</p>
+    {% endif %}
+        
+    <br>
+    <input type="submit" value="Go Home">
+</form>
+
+{% endblock %}
