@@ -102,7 +102,7 @@ def verify_signature(file_path, signature, public_key):
         return 'Signature is valid'
     except:
         print("Signature is NOT valid.")
-        return 'Signature is not valid'
+        return 'Signature is not valid. File may be manipulated'
 
 def generate_key_pair():
     private_key = rsa.generate_private_key(
