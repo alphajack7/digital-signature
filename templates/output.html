@@ -7,7 +7,7 @@
 {% block body %} 
 <h1>Signature verfied</h1>
 <form action="/">
-    {% if result=='Signature is not valid' %}
+    {% if result=='Signature is not valid. File may be manipulated' %}
         <p style="color:tomato;">{{ result }}</p>
     {% else %}
     <p style="color:rgb(8, 75, 8);">{{ result }}</p>
