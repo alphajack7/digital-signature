@@ -10,9 +10,21 @@
     <label for="afile">Upload file to sign</label>
     <input type="file" name="afile" id="afile">
     <br>
+    {% if is_key=="present" %}
+        <label for="private_key">Upload private key</label>
+        <input type="file" name="private_key" id="private_key" accept=".pem">
+    {% endif %}
+
     <br>
-    <input type="submit" value="upload">
     <br>
+    {% if is_key=="absent" %}
+    <label for="is_key_available">Key preference<br></label>
+    <select id="is_key_available" name="is_key_available">
+        <option value="absent" >Sign with auto generated key</option>
+        <option value="present">i have my own private key</option>
+    </select>
+    {% endif %}
     <p>later will give user an option to sign with there private key</p>
-    </form>
+    <input type="submit" value="upload">    
+</form>
 {% endblock %}

@@ -22,10 +22,14 @@ def sign():
 @app.route('/signature',methods=['POST','PUT','DELETE'])
 def signature():
     afile=request.files['afile']
+    
+    
     file_path='uploads/'+afile.filename
     afile.save(file_path)
+    
     private_key, public_key = generate_key_pair()
     #signing  occurs in below func
+        
     signature=sign_file(file_path,private_key)
 
     #removing the uploaded file jo sign krna tha
@@ -102,7 +106,17 @@ def verify_signature(file_path, signature, public_key):
         return 'Signature is valid'
     except:
         print("Signature is NOT valid.")
-        return 'Signature is not valid'
+        return 'Signature is not valid. File may be manipulated'
+@app.route('/keygen', methods=['POST','PUT','DELETE'])
+def new_key_pair():
+    private_key,public_key=generate_key_pair()
+    save_private_key(private_key,'generatedKeys/private_key.pem','alpha')
+    save_public_key(public_key,'generatedKeys/public_key.pem')
+
+    shutil.make_archive('key_pair', 'zip', 'generatedKeys')
+    os.remove('generatedKeys/private_key.pem'),os.remove('generatedKeys/public_key.pem')
+    return send_file('key_pair.zip',as_attachment=True),os.remove('key_pair.zip')
+
 
 def generate_key_pair():
     private_key = rsa.generate_private_key(
