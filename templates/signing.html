@@ -9,7 +9,7 @@
 <form action="/signature" method="POST" enctype="multipart/form-data">
     <label for="afile">Upload file to sign</label>
     <input type="file" name="afile" id="afile">
-    <input type="text" name="isPrivateKey" id="isPrivateKey" value= {{ isPrivateKey }}>
+    <input type="hidden" name="isPrivateKey" id="isPrivateKey" value= {{ isPrivateKey }} display="none">
     <br>
     {% if isPrivateKey=="True" %}
         <label for="private_key">Upload private key</label>
