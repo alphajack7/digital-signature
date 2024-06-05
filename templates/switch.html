@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+    
+{% endblock %}
+
+{% block body %} 
+<h1>Do you have your own Private Key</h1>
+
+<form action="/switch" method="POST">
+    <label for="isPrivateKey">Private present:</label>
+    <select id="isPrivateKey" name="isPrivateKey">
+        <option value="True">Yes</option>
+        <option value="False">No</option>
+       
+    </select>
+    <br><br>
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

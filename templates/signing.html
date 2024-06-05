@@ -9,22 +9,13 @@
 <form action="/signature" method="POST" enctype="multipart/form-data">
     <label for="afile">Upload file to sign</label>
     <input type="file" name="afile" id="afile">
+    <input type="text" name="isPrivateKey" id="isPrivateKey" value= {{ isPrivateKey }}>
     <br>
-    {% if is_key=="present" %}
+    {% if isPrivateKey=="True" %}
         <label for="private_key">Upload private key</label>
         <input type="file" name="private_key" id="private_key" accept=".pem">
     {% endif %}
-
     <br>
-    <br>
-    {% if is_key=="absent" %}
-    <label for="is_key_available">Key preference<br></label>
-    <select id="is_key_available" name="is_key_available">
-        <option value="absent" >Sign with auto generated key</option>
-        <option value="present">i have my own private key</option>
-    </select>
-    {% endif %}
-    <p>later will give user an option to sign with there private key</p>
     <input type="submit" value="upload">    
 </form>
 {% endblock %}

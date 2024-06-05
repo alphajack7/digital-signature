@@ -17,33 +17,56 @@ def index():
 @app.route('/sign',methods=['POST','PUT','DELETE'])
 def sign():
     
-    return render_template("signing.html")
+    return render_template("switch.html")
+
+#chosing b/w private presrnt or not
+
+@app.route('/switch',methods=['POST','PUT','DELETE'])
+def switch():
+    isPrivateKey=request.form['isPrivateKey']
+    return render_template("signing.html",isPrivateKey=isPrivateKey)
 
 @app.route('/signature',methods=['POST','PUT','DELETE'])
 def signature():
     afile=request.files['afile']
-    
-    
+    isPrivateKey=request.form['isPrivateKey']
     file_path='uploads/'+afile.filename
     afile.save(file_path)
+    if isPrivateKey=="True":
+        private_key_file=request.files['private_key']
+        private_key_path='uploads/'+ private_key_file.filename
+        private_key_file.save(private_key_path)
+        #handling pem file
+        password = b'alpha'
+        private_key=load_private_key_from_pem_file(private_key_path,password)
+
+        signature=sign_file(file_path,private_key)
+
+        #saving signature
+        signature_filepath = 'downloads/signature.bin'
+        save_signature(signature, signature_filepath)
+        #deleting user files
+        os.remove(file_path),os.remove(private_key_path)
+        return send_file(signature_filepath,as_attachment=True),os.remove(signature_filepath)
+
     
-    private_key, public_key = generate_key_pair()
-    #signing  occurs in below func
+    else:
+        private_key, public_key = generate_key_pair()
+        #signing  occurs in below func
+        signature=sign_file(file_path,private_key)
         
-    signature=sign_file(file_path,private_key)
+        #saving the files to let user download it....delete krna hoga last me
+        public_key_filepath= 'downloads/public_key.pem'
+        save_public_key(public_key, public_key_filepath)
+
+        private_key_filepath='downloads/private_key.pem'
+        password= 'alpha'
+        save_private_key(private_key,private_key_filepath,password)
 
     #removing the uploaded file jo sign krna tha
     os.remove(file_path)
-    #saving the files to let user download it....delete krna hoga last me
-    public_key_filepath= 'downloads/public_key.pem'
-    save_public_key(public_key, public_key_filepath)
-
-    private_key_filepath='downloads/private_key.pem'
-    password= 'alpha'
-    save_private_key(private_key,private_key_filepath,password)
-
-    signature_filename = 'downloads/signature.bin'
-    save_signature(signature, signature_filename)
+    signature_filepath = 'downloads/signature.bin'
+    save_signature(signature, signature_filepath)
 
     return render_template("download.html")  
 
@@ -88,6 +111,23 @@ def load_public_key_from_pem_file(filename):
     if not isinstance(public_key, RSAPublicKey):
         raise ValueError("Invalid public key format.")
     return public_key
+
+def load_private_key_from_pem_file(pem_file_path, password):
+    try:
+        with open(pem_file_path, 'rb') as pem_file:
+            pem_data = pem_file.read()
+
+        private_key = serialization.load_pem_private_key(
+            pem_data,
+            password=password,
+            backend=default_backend()
+        )
+
+        return private_key
+
+    except Exception as e:
+        print(f"An error occurred while loading the private key: {e}")
+        return None
 
 def verify_signature(file_path, signature, public_key):
     with open(file_path, "rb") as file:
